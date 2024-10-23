@@ -27,7 +27,7 @@ class _MainPageState extends State<MainPage> {
         child: BlocConsumer<BatteryBloc, BatteryState>(
           bloc: batteryBloc,
           listener: (context, state) {
-            print(state);
+           
             if (state is BatteryInfoLoaded) {
               batteryLevel = state.batteryInfo.batteryLevel;
               isCharging = state.batteryInfo.isCharging;
@@ -42,19 +42,19 @@ class _MainPageState extends State<MainPage> {
                   'Battery Level: ${batteryLevel ?? 'Unknown click on button to get battery info'}'),
               Text(
                   'Is Charging: ${isCharging ?? 'Unknown click on button to get battery info'}'),
-              SizedBox(
+              const SizedBox(
                 height: 100,
               ),
               ElevatedButton(
                   onPressed: () {
                     batteryBloc.add(const GetBatteryInfoE());
                   },
-                  child: Text('Get Battery Info')),
+                  child: const Text('Get Battery Info')),
               ElevatedButton(
                   onPressed: () {
                     batteryBloc.add(const GetBatteryInfoE());
                   },
-                  child: Text('Refresh button'))
+                  child: const Text('Refresh button'))
             ],
           ),
         ),

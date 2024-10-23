@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dit_battery_status/core/error/failure.dart';
 import 'package:dit_battery_status/core/usecase/usecase.dart';
-import 'package:dit_battery_status/feature/battery/data/models/batteryInfoModel.dart';
+import 'package:dit_battery_status/feature/battery/data/models/battery_info_model.dart';
 
 
 import '../repositories/battery_repository.dart';
