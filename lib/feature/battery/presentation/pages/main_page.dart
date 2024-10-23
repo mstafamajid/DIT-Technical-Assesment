@@ -27,12 +27,14 @@ class _MainPageState extends State<MainPage> {
         child: BlocConsumer<BatteryBloc, BatteryState>(
           bloc: batteryBloc,
           listener: (context, state) {
-           
+           print("BatteryBloc state: $state");
             if (state is BatteryInfoLoaded) {
               batteryLevel = state.batteryInfo.batteryLevel;
               isCharging = state.batteryInfo.isCharging;
 
               setState(() {});
+            }else if(state is BatteryError){
+              print("Error: ${state.message}");
             }
           },
           builder: (context, state) => Column(
