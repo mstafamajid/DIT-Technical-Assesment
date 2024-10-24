@@ -1,5 +1,6 @@
 import 'package:dit_battery_status/core/usecase/usecase.dart';
 import 'package:dit_battery_status/feature/battery/data/models/battery_info_model.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/usecases/get_battery_info_usecase.dart';

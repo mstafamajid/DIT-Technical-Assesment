@@ -1,4 +1,6 @@
+import 'package:dit_battery_status/core/consts/colors.dart';
 import 'package:dit_battery_status/core/dependency_injection/dependencies.dart';
+import 'package:dit_battery_status/core/theme/main_theme.dart';
 import 'package:flutter/material.dart';
 
 import 'feature/battery/presentation/pages/main_page.dart';
@@ -18,9 +20,9 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Battery Status',
-      home: MainPage(),
-    );
+    return MaterialApp(
+        title: 'Battery Status',
+        home: const MainPage(),
+        theme: AppTheme.mainTheme);
   }
 }

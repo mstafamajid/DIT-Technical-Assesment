@@ -1,8 +1,11 @@
+import 'package:dit_battery_status/core/consts/colors.dart';
 import 'package:dit_battery_status/feature/battery/presentation/bloc/battery_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/dependency_injection/dependencies.dart';
+import '../widgets/battery_indecator.dart';
+import '../widgets/battery_progress.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -35,6 +38,9 @@ class _MainPageState extends State<MainPage>
     // Initialize the progress animation; updated dynamically
     _progressAnimation =
         Tween<double>(begin: 0.0, end: 0.0).animate(_controller);
+    _colorAnimation =
+        Tween<Color?>(begin: COLOR_GREEN_31511E, end: COLOR_GREEN_31511E)
+            .animate(_controller);
   }
 
   Color _getBatteryColor(double level) {
@@ -99,55 +105,37 @@ class _MainPageState extends State<MainPage>
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 if (batteryLevel != null)
-                  AnimatedBuilder(
-                    animation: _controller,
-                    builder: (context, child) {
-                      return Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          if (isCharging ?? false)
-                            Icon(
-                              Icons.bolt,
-                              size: 80,
-                              color: Colors.green,
-                            ),
-                          SizedBox(
-                            height: 100,
-                            width: 100,
-                            child: CircularProgressIndicator(
-                                backgroundColor: Colors.grey[300],
-                                strokeWidth: 5,
-                                value: _progressAnimation.value,
-                                valueColor: _colorAnimation),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
+                  BatteryProgress(
+                      controller: _controller,
+                      isCharging: isCharging,
+                      progressAnimation: _progressAnimation,
+                      colorAnimation: _colorAnimation),
                 const SizedBox(height: 20),
-                AnimatedBuilder(
-                  animation: _progressAnimation,
-                  builder: (context, a) => Text(
-                    'Battery Level: ${_progressAnimation.value == 0 ? 'Unknown' : (_progressAnimation.value * 100).toInt()}%',
-                    style: const TextStyle(fontSize: 18),
-                  ),
+                BatteryLevelIndecator(
+                  progressAnimation: _progressAnimation,
+                  colorAnimation: _colorAnimation,
                 ),
-                Text(
-                  'Is Charging: ${isCharging == null ? 'Unknown' : (isCharging! ? 'Yes' : 'No')}',
-                  style: const TextStyle(fontSize: 18),
+                Text.rich(
+                  TextSpan(text: "Is Charging: ", children: [
+                    TextSpan(
+                      text:
+                          '${isCharging == null ? 'Unknown' : (isCharging! ? 'Yes' : 'No')}',
+                      style: TextStyle(
+                          color: (isCharging ?? false)
+                              ? Colors.green
+                              : COLOR_GREEN_31511E),
+                    )
+                  ]),
                 ),
                 const SizedBox(height: 50),
                 ElevatedButton(
+
                   onPressed: () {
                     batteryBloc.add(const GetBatteryInfoE());
                   },
-                  child: const Text('Get Battery Info'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    batteryBloc.add(const GetBatteryInfoE());
-                  },
-                  child: const Text('Refresh'),
+                  child: Text(batteryLevel == null
+                      ? 'Get Battery Info'
+                      : "Refresh Battery Info"),
                 ),
               ],
             );
