@@ -1,3 +1,4 @@
+import 'package:dit_battery_status/core/consts/strings.dart';
 import 'package:dit_battery_status/core/error/exception.dart';
 import 'package:flutter/services.dart';
 
@@ -12,14 +13,15 @@ abstract class PlatformDataSource {
 class PlatformDataSourceImpl implements PlatformDataSource {
   @override
   Future<BatteryInfoModel> getBatteryInfo() async {
-    const MethodChannel platform = MethodChannel('BatteryInfo_DIT');
+    const MethodChannel platform = MethodChannel(METHOD_CHANNEL_NAME);
     try {
-    
-      final Map batteryInfo = await platform.invokeMethod('getBatteryInfo');
+      final Map batteryInfo =
+          await platform.invokeMethod(GET_BATTERY_INFO_METHOD_NAME);
 
       return BatteryInfoModel.fromMap(batteryInfo);
     } on PlatformException catch (e) {
-    
+      throw UnExpectedException(message: e.message ?? 'Something went wrong');
+    } on MissingPluginException catch (e) {
       throw UnExpectedException(message: e.message ?? 'Something went wrong');
     }
   }

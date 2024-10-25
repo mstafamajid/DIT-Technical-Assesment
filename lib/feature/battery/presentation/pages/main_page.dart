@@ -95,8 +95,12 @@ class _MainPageState extends State<MainPage>
                 _controller.forward();
               });
             } else if (state is BatteryError) {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Error: ${state.message}')),
+                SnackBar(
+                  content: Text('Error: ${state.message}'),
+                  backgroundColor: Colors.red,
+                ),
               );
             }
           },
@@ -129,7 +133,6 @@ class _MainPageState extends State<MainPage>
                 ),
                 const SizedBox(height: 50),
                 ElevatedButton(
-
                   onPressed: () {
                     batteryBloc.add(const GetBatteryInfoE());
                   },

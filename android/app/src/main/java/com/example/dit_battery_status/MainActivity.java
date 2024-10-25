@@ -23,13 +23,16 @@ public class MainActivity extends FlutterActivity {
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
                 .setMethodCallHandler(
                         (call, result) -> {
-                            if (call.method.contains("getBatteryInfo")) {
+                            if (call.method.equals("getBatteryInfo")) {
                                 Map<String, Object> batteryInfo = getBatteryLevel();
                                 if (batteryInfo.get("batteryLevel") != null && batteryInfo.get("isCharging")!=null ) {
                                     result.success(batteryInfo); // Return the battery info to Flutter
                                 } else {
                                     result.error("UnExpectedError", "Battery information not available at the time try again.", null);
                                 }
+                            }
+                            else {
+                                result.notImplemented();
                             }
                         }
                 );
@@ -51,8 +54,6 @@ public class MainActivity extends FlutterActivity {
         if (batteryManager != null) {
 
             batteryLevel = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
-
-
         }
 //
         // Create a map to return the values
